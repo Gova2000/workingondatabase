@@ -33,9 +33,9 @@ app.get("/players/", async (request, response) => {
     SELECT
     *
     FROM 
-    cricket_team
+        cricket_team
     ORDER BY
-    player_id`;
+        player_id`;
   const PlayerList = await db.all(getAllPlayers);
   response.send(PlayerList);
 });
@@ -43,14 +43,14 @@ app.get("/players/", async (request, response) => {
 //API to create a new player
 app.post("/players/", async (request, response) => {
   const details = request.body;
-  const { player_name, jersey_number, role } = details;
+  const { playerName, jerseyNumber, role } = details;
   const addPlayer = `
     INSERT INTO
     cricket_team(player_name,jersey_number,role)
     VALUES
     (
-        '${player_name}',
-        ${jersey_number},
+        '${playerName}',
+        ${jerseyNumber},
         '${role}'
         );`;
   await db.run(addPlayer);
@@ -75,14 +75,14 @@ app.get("/players/:playerId/", async (request, response) => {
 app.put("/players/:playerId/", async (request, response) => {
   const { playerId } = request.params;
   const details = request.body;
-  const { player_name, jersey_number, role } = details;
+  const { playerName, jerseyNumber, role } = details;
   const updatePlayer = `
     UPDATE
     cricket_team
     SET
     
-        player_name='${player_name}',
-       jersey_number= ${jersey_number},
+        player_name='${playerName}',
+       jersey_number= ${jerseyNumber},
         role='${role}'
     WHERE
         player_id=${playerId}
@@ -102,3 +102,5 @@ app.delete("/players/:playerId/", async (request, response) => {
   await db.run(delPlayer);
   response.send("Player Removed");
 });
+
+module.exports = app;
