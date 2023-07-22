@@ -36,8 +36,17 @@ app.get("/players/", async (request, response) => {
         cricket_team
     ORDER BY
         player_id`;
+  const objJ = (dbOb) => {
+    return {
+      playerId: dbOb.player_id,
+      playerName: dbOb.player_name,
+      jerseyNumber: dbOb.jersey_number,
+      role: dbOb.role,
+    };
+  };
   const PlayerList = await db.all(getAllPlayers);
-  response.send(PlayerList);
+
+  response.send(PlayerList.map((each) => objJ(each)));
 });
 
 //API to create a new player
@@ -67,8 +76,21 @@ app.get("/players/:playerId/", async (request, response) => {
     cricket_team
     WHERE 
     player_id=${playerId};`;
-  const bd = await db.get(Player);
-  response.send(bd);
+
+  const convertDbObjectToResponseObject = (dbObject) => {
+    return {
+      playerId: dbObject.player_id,
+      playerName: dbObject.player_name,
+      jerseyNumber: dbObject.jersey_number,
+      role: dbObject.role,
+    };
+  };
+  const playersArray = await db.all(Player);
+  response.send(
+    playersArray.map((eachPlayer) =>
+      convertDbObjectToResponseObject(eachPlayer)
+    )
+  );
 });
 
 //Update player details
