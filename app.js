@@ -85,12 +85,8 @@ app.get("/players/:playerId/", async (request, response) => {
       role: dbObject.role,
     };
   };
-  const playersArray = await db.all(Player);
-  response.send(
-    playersArray.map((eachPlayer) =>
-      convertDbObjectToResponseObject(eachPlayer)
-    )
-  );
+  const playersArray = await db.get(Player);
+  response.send(convertDbObjectToResponseObject(playerArray));
 });
 
 //Update player details
